@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|c:\\users\\pcx\\documents\\school 3rd year\\cs345\\coins_activity\\coins_activity\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|solutionrelative:coins_activity\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\coins_activity\\library.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|solutionrelative:coins_activity\\library.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\coins_activity\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|solutionrelative:coins_activity\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|c:\\users\\pcx\\documents\\school 3rd year\\cs345\\coins_activity\\coins_activity\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{05436789-FD0D-4DC8-AAC0-16D740B44B5E}|Coins_Activity\\Coins_Activity.csproj|solutionrelative:coins_activity\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +22,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Library.cs",
               "DocumentMoniker": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\Coins_Activity\\Library.cs",
               "RelativeDocumentMoniker": "Coins_Activity\\Library.cs",
               "ToolTip": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\Coins_Activity\\Library.cs",
               "RelativeToolTip": "Coins_Activity\\Library.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-17T08:21:59.55Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-17T08:21:59.55Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\Coins_Activity\\Form1.cs",
               "RelativeDocumentMoniker": "Coins_Activity\\Form1.cs",
               "ToolTip": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\Coins_Activity\\Form1.cs",
               "RelativeToolTip": "Coins_Activity\\Form1.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAACAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-17T07:51:16.684Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\Coins_Activity\\Form1.cs",
               "RelativeDocumentMoniker": "Coins_Activity\\Form1.cs",
               "ToolTip": "C:\\Users\\pcx\\Documents\\SCHOOL 3RD YEAR\\CS345\\Coins_Activity\\Coins_Activity\\Form1.cs [Design]",
               "RelativeToolTip": "Coins_Activity\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T13:19:39.768Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-11-15T13:19:39.768Z"
             }
           ]
         }

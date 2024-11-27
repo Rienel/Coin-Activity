@@ -1,166 +1,139 @@
-﻿using AForge.Imaging.Filters;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace Coins_Activity
 {
     internal class Library
     {
-        public static void GetCoinPixels(
-            Bitmap processed,
-            ref int totalCount,
-            ref float totalValue,
-            ref int peso5Count,
-            ref int peso1Count,
-            ref int cent25Count,
-            ref int cent10Count,
-            ref int cent5Count)
+        public Bitmap Helper(Bitmap original)
         {
-            List<Rectangle> detectedCoins = DetectCoins(processed);
+            Bitmap processed = new Bitmap(original.Width, original.Height);
 
-            DebugPrintCoinSizes(detectedCoins);
-
-            foreach (var coin in detectedCoins)
+            using (Graphics g = Graphics.FromImage(processed))
             {
-                float coinSize = coin.Width * coin.Height;
+                g.DrawImage(original, new Rectangle(0, 0, processed.Width, processed.Height));
+            }
 
-                if (IsFivePeso(coinSize))
+            Binary(ref original, ref processed, 200);
+            return processed;
+        }
+
+        private void Binary(ref Bitmap original, ref Bitmap processed, int threshold)
+        {
+            for (int y = 0; y < original.Height; y++)
+            {
+                for (int x = 0; x < original.Width; x++)
                 {
-                    Console.WriteLine($"5 Peso detected, size: {coinSize}");
-                    peso5Count++;
-                    totalValue += 5.0f;
+                    Color pixel = original.GetPixel(x, y);
+                    int gray = (pixel.R + pixel.G + pixel.B) / 3;
+                    Color newColor = gray < threshold ? Color.Black : Color.White;
+                    processed.SetPixel(x, y, newColor);
                 }
-                else if (IsOnePeso(coinSize))
+            }
+        }
+
+        public Dictionary<string, double> CoinCounter(Bitmap image)
+        {
+            var objects = DetectCoins(image);
+            var coins = new Dictionary<string, double>
+            {
+                { "5 Peso", 0 },
+                { "1 Peso", 0 },
+                { "25 Centavo", 0 },
+                { "10 Centavo", 0 },
+                { "5 Centavo", 0 },
+                { "Value", 0 }
+            };
+
+            foreach (var coinPoints in objects)
+            {
+                int size = coinPoints.Count;
+
+                if (size > 18001)
                 {
-                    Console.WriteLine($"1 Peso detected, size: {coinSize}");
-                    peso1Count++;
-                    totalValue += 1.0f;
+                    coins["5 Peso"]++;
+                    coins["Value"] += 5;
                 }
-                else if (IsTwentyFiveCentavo(coinSize))
+                else if (size > 15001)
                 {
-                    Console.WriteLine($"25 Centavo detected, size: {coinSize}");
-                    cent25Count++;
-                    totalValue += 0.25f;
+                    coins["1 Peso"]++;
+                    coins["Value"] += 1;
                 }
-                else if (IsTenCentavo(coinSize))
+                else if (size > 11001)
                 {
-                    Console.WriteLine($"10 Centavo detected, size: {coinSize}");
-                    cent10Count++;
-                    totalValue += 0.10f;
+                    coins["25 Centavo"]++;
+                    coins["Value"] += 0.25;
                 }
-                else if (IsFiveCentavo(coinSize))
+                else if (size > 8001)
                 {
-                    Console.WriteLine($"5 Centavo detected, size: {coinSize}");
-                    cent5Count++;
-                    totalValue += 0.05f;
+                    coins["10 Centavo"]++;
+                    coins["Value"] += 0.10;
                 }
-                else
+                else if (size > 6500)
                 {
-                    Console.WriteLine($"Unidentified coin, size: {coinSize}");
+                    coins["5 Centavo"]++;
+                    coins["Value"] += 0.05;
                 }
             }
 
-            totalCount = peso5Count + peso1Count + cent25Count + cent10Count + cent5Count;
+            return coins;
         }
 
-        private static List<Rectangle> DetectCoins(Bitmap img)
+        private List<List<Point>> DetectCoins(Bitmap image)
         {
-            List<Rectangle> coinBoundingBoxes = new List<Rectangle>();
+            List<List<Point>> objects = new List<List<Point>>();
+            bool[,] visited = new bool[image.Width, image.Height];
+            int blackThreshold = 20;
 
-            Grayscale grayscaleFilter = new Grayscale(0.3, 0.59, 0.11);
-            Bitmap grayImage = grayscaleFilter.Apply(img);
-
-            GaussianBlur blurFilter = new GaussianBlur(2, 7);
-            Bitmap blurredImage = blurFilter.Apply(grayImage);
-
-            CannyEdgeDetector cannyFilter = new CannyEdgeDetector(100, 200);
-            Bitmap edgeImage = cannyFilter.Apply(blurredImage);
-
-            bool[,] visited = new bool[edgeImage.Width, edgeImage.Height];
-
-            for (int y = 1; y < edgeImage.Height - 1; y++)
+            for (int y = 0; y < image.Height; y++)
             {
-                for (int x = 1; x < edgeImage.Width - 1; x++)
+                for (int x = 0; x < image.Width; x++)
                 {
-                    if (edgeImage.GetPixel(x, y).R == 0 && !visited[x, y])
+                    if (image.GetPixel(x, y).R == 0 && !visited[x, y])
                     {
-                        List<Point> blob = FloodFill(edgeImage, x, y, visited);
-
-                        if (blob.Count > 100)
+                        List<Point> coinPoints = new List<Point>();
+                        BLOBS(image, x, y, visited, blackThreshold, coinPoints);
+                        if (coinPoints.Count > 0)
                         {
-                            int minX = blob.Min(p => p.X);
-                            int maxX = blob.Max(p => p.X);
-                            int minY = blob.Min(p => p.Y);
-                            int maxY = blob.Max(p => p.Y);
-
-                            coinBoundingBoxes.Add(new Rectangle(minX, minY, maxX - minX, maxY - minY));
+                            objects.Add(coinPoints);
                         }
                     }
                 }
             }
 
-            return coinBoundingBoxes;
+            return objects;
         }
 
-        private static void DebugPrintCoinSizes(List<Rectangle> detectedCoins)
+        private void BLOBS(Bitmap image, int startX, int startY, bool[,] visited, int threshold, List<Point> contour)
         {
-            foreach (var coin in detectedCoins)
-            {
-                float coinSize = coin.Width * coin.Height;
-                Console.WriteLine($"Detected coin size: {coinSize}");
-            }
-        }
+            Stack<Point> stack = new Stack<Point>();
+            stack.Push(new Point(startX, startY));
+            visited[startX, startY] = true;
 
-        private static List<Point> FloodFill(Bitmap img, int startX, int startY, bool[,] visited)
-        {
-            List<Point> points = new List<Point>();
-            Queue<Point> queue = new Queue<Point>();
-            queue.Enqueue(new Point(startX, startY));
-
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                Point p = queue.Dequeue();
-                if (p.X >= 0 && p.X < img.Width && p.Y >= 0 && p.Y < img.Height &&
-                    img.GetPixel(p.X, p.Y).R == 0 && !visited[p.X, p.Y])
+                Point p = stack.Pop();
+                contour.Add(p);
+
+                for (int dy = -1; dy <= 1; dy++)
                 {
-                    visited[p.X, p.Y] = true;
-                    points.Add(p);
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        int nx = p.X + dx;
+                        int ny = p.Y + dy;
 
-                    queue.Enqueue(new Point(p.X + 1, p.Y));
-                    queue.Enqueue(new Point(p.X - 1, p.Y));
-                    queue.Enqueue(new Point(p.X, p.Y + 1));
-                    queue.Enqueue(new Point(p.X, p.Y - 1));
+                        if (nx >= 0 && ny >= 0 && nx < image.Width && ny < image.Height && !visited[nx, ny])
+                        {
+                            Color neighborColor = image.GetPixel(nx, ny);
+                            if (neighborColor.R < threshold)
+                            {
+                                visited[nx, ny] = true;
+                                stack.Push(new Point(nx, ny));
+                            }
+                        }
+                    }
                 }
             }
-
-            return points;
-        }
-
-        private static bool IsFivePeso(float size)
-        {
-            return size > 12000 && size <= 15000;
-        }
-
-        private static bool IsOnePeso(float size)
-        {
-            return size > 8000 && size <= 12000;
-        }
-
-        private static bool IsTwentyFiveCentavo(float size)
-        {
-            return size > 5000 && size <= 8000;
-        }
-
-        private static bool IsTenCentavo(float size)
-        {
-            return size > 3000 && size <= 5000;
-        }
-
-        private static bool IsFiveCentavo(float size)
-        {
-            return size > 1500 && size <= 3000;
         }
     }
 }

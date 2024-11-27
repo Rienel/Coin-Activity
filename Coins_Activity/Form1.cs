@@ -1,4 +1,5 @@
-﻿using ImageProcess2;
+﻿using AForge.Imaging.Filters;
+using ImageProcess2;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,6 @@ namespace Coins_Activity
     {
         Bitmap img, processed;
         Label fivecentavo, tencentavo, twentyfivecentavo, onepeso, fivepeso, resultLabel;
-
 
         public Form1()
         {
@@ -32,35 +32,24 @@ namespace Coins_Activity
             pictureBox1.Image = img;
         }
 
-        private void Edging(object sender, EventArgs e)
-        {
-            
-        }
-
         private void CalculateBtn(object sender, EventArgs e)
         {
-            int totalCount = 0;
-            int peso5Count = 0, peso1Count = 0, cent25Count = 0, cent10Count = 0, cent5Count = 0;
-            float totalValue = 0;
+            if (img == null) return;
 
-            Library.GetCoinPixels(
-                processed,
-                ref totalCount,
-                ref totalValue,
-                ref peso5Count,
-                ref peso1Count,
-                ref cent25Count,
-                ref cent10Count,
-                ref cent5Count
-            );
+            Library library = new Library();
+            processed = library.Helper(img);
+            var coins = library.CoinCounter(processed);
 
-            fivecentavo.Text = $"5 Centavo: {cent5Count}";
-            tencentavo.Text = $"10 Centavo: {cent10Count}";
-            twentyfivecentavo.Text = $"25 Centavo: {cent25Count}";
-            onepeso.Text = $"1 Peso: {peso1Count}";
-            fivepeso.Text = $"5 Peso: {peso5Count}";
-            resultLabel.Text = $"{totalValue:F2} PHP";
+            fivecentavo.Text = $"{coins["5 Centavo"]}";
+            tencentavo.Text = $"{coins["10 Centavo"]}";
+            twentyfivecentavo.Text = $"{coins["25 Centavo"]}";
+            onepeso.Text = $"{coins["1 Peso"]}";
+            fivepeso.Text = $"{coins["5 Peso"]}";
+            resultLabel.Text = $"{coins["Value"]:F2} PHP";
+
+            pictureBox2.Image = processed; // Display processed image
         }
+
 
 
         private void Load_ImgBtn(object sender, EventArgs e)

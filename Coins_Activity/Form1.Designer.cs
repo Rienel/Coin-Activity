@@ -45,7 +45,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.button2 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -201,16 +200,6 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Load_ImgBtn);
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(157, 614);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(114, 30);
-            this.button4.TabIndex = 17;
-            this.button4.Text = "Binary";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.Edging);
-            // 
             // pictureBox2
             // 
             this.pictureBox2.Location = new System.Drawing.Point(435, 90);
@@ -226,7 +215,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1202, 721);
             this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox4);
@@ -272,7 +260,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
